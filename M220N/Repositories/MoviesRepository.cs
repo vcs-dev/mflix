@@ -187,8 +187,9 @@ namespace M220N.Repositories
 
             return await _moviesCollection
                .Find(m => m.Genres.Any(g => genres.Contains(g)))
-               .Skip(page * limit)
+               .Sort(sort)
                .Limit(limit)
+               .Skip(page * limit)
                .ToListAsync(cancellationToken);
         }
 
