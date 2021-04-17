@@ -203,15 +203,6 @@ namespace M220N.Repositories
         public async Task<MoviesByCastProjection> GetMoviesCastFacetedAsync(string cast, int page = 0,
             CancellationToken cancellationToken = default)
         {
-            /*
-               TODO Ticket: Faceted Search
-
-               We have already built the pipeline stages you need to perform a
-               faceted search on the Movies collection. Your task is to append the
-               facetStage, skipStage, and limitStage pipeline stages to the pipeline.
-               Think carefully about the order that these stages should be executed!
-           */
-
             // I match movies by cast members
             var matchStage = new BsonDocument("$match",
                 new BsonDocument("cast",
@@ -236,8 +227,9 @@ namespace M220N.Repositories
             {
                 matchStage,
                 sortStage,
-                // add the remaining stages in the correct order
-
+                skipStage,
+                limitStage,
+                facetStage
             };
 
             // I run the pipeline you built
