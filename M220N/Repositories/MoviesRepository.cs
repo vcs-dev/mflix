@@ -114,12 +114,10 @@ namespace M220N.Repositories
             params string[] countries
             )
         {
-            var projectionFilter = Builders<Movie>.Projection.Include(x => x.Id).Include(x => x.Title);
-            var all = Builders<Movie>.Filter.All("countries", countries);
             return await _moviesCollection
-                .Find(all)
-                .SortByDescending(x => x.Title)
-                .Project<MovieByCountryProjection>(projectionFilter)
+                .Find(m => m.Countries.Any(c => countries.Contains(c)))
+                .SortByDescending(m => m.Title)
+                .Project<MovieByCountryProjection>(Builders<Movie>.Projection.Include(x => x.Title).Include(x => x.Id))
                 .ToListAsync(cancellationToken);
         }
 
