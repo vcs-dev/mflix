@@ -73,11 +73,7 @@ namespace M220N.Repositories
                     Email = email,
                     HashedPassword = PasswordHashOMatic.Hash(password)
                 };
-                await _usersCollection.InsertOneAsync(user);
-                //
-                // // TODO Ticket: Durable Writes
-                // // To use a more durable Write Concern for this operation, add the 
-                // // .WithWriteConcern() method to your InsertOneAsync call.
+                await _usersCollection.WithWriteConcern(new WriteConcern(1)).InsertOneAsync(user, cancellationToken);
 
                 var newUser = await GetUserAsync(user.Email, cancellationToken);
                 return new UserResponse(newUser);
