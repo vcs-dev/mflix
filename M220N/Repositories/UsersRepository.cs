@@ -112,7 +112,7 @@ namespace M220N.Repositories
 
                 // If the session doesn't exist, allow MongoDB to create a
                 // new one by passing the IsUpsert update option.
-                var filter = Builders<Session>.Filter.Eq(x => x.UserId, storedUser.Id);
+                var filter = Builders<Session>.Filter.Eq(x => x.UserId, storedUser.Email);
                 await _sessionsCollection.UpdateOneAsync(
                 filter,
                 Builders<Session>.Update.Set(x => x.UserId, storedUser.Email).Set(x => x.Jwt, user.AuthToken),
